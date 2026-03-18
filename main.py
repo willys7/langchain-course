@@ -1,5 +1,6 @@
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
+from langchain_ollama import ChatOllama
 from langchain_core.prompts import PromptTemplate
 load_dotenv()
 
@@ -16,7 +17,7 @@ En 2002, Musk fundó SpaceX, fabricante aeroespacial y empresa de servicios de t
 Ha sido criticado por hacer declaraciones poco científicas y controvertidas. En 2018, fue demandado por la Comisión de Bolsa y Valores de Estados Unidos (SEC) por tuitear falsamente que había conseguido financiación para una adquisición privada de Tesla. Llegó a un acuerdo con la SEC, pero no admitió su culpabilidad, renunciando temporalmente a su presidencia y aceptando limitaciones en el uso de su Twitter personal. En 2019, ganó un juicio por difamación presentado contra él por un espeleólogo británico que asesoró en el rescate de la cueva Tham Luang. Musk también ha sido criticado por difundir información errónea sobre la pandemia de COVID-19 y teorías de conspiración; y por sus controvertidas opiniones sobre asuntos como la inteligencia artificial, las criptomonedas y el transporte público."""
     
     summary_template = """
-    Dame la información {information} sobre esta persona, quiero que crees:
+    Dada la información: {information}. Sobre esta persona, quiero que crees:
     1. Un pequeño resumen de la información dada.
     2. Dos hechos interesantes sobre esa persona."""
 
@@ -25,6 +26,7 @@ Ha sido criticado por hacer declaraciones poco científicas y controvertidas. En
     )
     
     llm = ChatOpenAI(temperature=0, model="gpt-5")
+    #llm = ChatOllama(temperature=0, model="gemma3:270m")
     chain = summary_prompt_template | llm
     response = chain.invoke(input={"information": information})
     print(response.content)
